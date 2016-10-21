@@ -65,34 +65,99 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var App = function (_React$Component) {
-	  _inherits(App, _React$Component);
+	var TodoApp = function (_React$Component) {
+	  _inherits(TodoApp, _React$Component);
 	
-	  function App() {
-	    _classCallCheck(this, App);
+	  function TodoApp(props) {
+	    _classCallCheck(this, TodoApp);
 	
-	    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+	    var _this = _possibleConstructorReturn(this, (TodoApp.__proto__ || Object.getPrototypeOf(TodoApp)).call(this, props));
+	
+	    _this.handleChange = _this.handleChange.bind(_this);
+	    _this.handleSubmit = _this.handleSubmit.bind(_this);
+	    _this.state = { items: [], text: '' };
+	    return _this;
 	  }
 	
-	  _createClass(App, [{
+	  _createClass(TodoApp, [{
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        'div',
 	        null,
 	        _react2.default.createElement(
-	          'h1',
+	          'h3',
 	          null,
-	          'Todo List!'
+	          'Todo App'
+	        ),
+	        _react2.default.createElement(TodoList, { items: this.state.items }),
+	        _react2.default.createElement(
+	          'form',
+	          { onSubmit: this.handleSubmit },
+	          _react2.default.createElement('input', { onChange: this.handleChange, value: this.state.text }),
+	          _react2.default.createElement(
+	            'button',
+	            null,
+	            'Add #' + (this.state.items.length + 1)
+	          )
 	        )
+	      );
+	    }
+	  }, {
+	    key: 'handleChange',
+	    value: function handleChange(e) {
+	      this.setState({ text: e.target.value });
+	    }
+	  }, {
+	    key: 'handleSubmit',
+	    value: function handleSubmit(e) {
+	      e.preventDefault();
+	      var newItem = {
+	        text: this.state.text,
+	        id: Date.now()
+	      };
+	      this.setState(function (prevState) {
+	        return {
+	          items: prevState.items.concat(newItem),
+	          text: ''
+	        };
+	      });
+	    }
+	  }]);
+	
+	  return TodoApp;
+	}(_react2.default.Component);
+	
+	var TodoList = function (_React$Component2) {
+	  _inherits(TodoList, _React$Component2);
+	
+	  function TodoList() {
+	    _classCallCheck(this, TodoList);
+	
+	    return _possibleConstructorReturn(this, (TodoList.__proto__ || Object.getPrototypeOf(TodoList)).apply(this, arguments));
+	  }
+	
+	  _createClass(TodoList, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'ul',
+	        null,
+	        this.props.items.map(function (item) {
+	          return _react2.default.createElement(
+	            'li',
+	            { key: item.id },
+	            item.text
+	          );
+	        })
 	      );
 	    }
 	  }]);
 	
-	  return App;
+	  return TodoList;
 	}(_react2.default.Component);
 	
-	(0, _reactDom.render)(_react2.default.createElement(App, null), document.getElementById('app'));
+	(0, _reactDom.render)(_react2.default.createElement(TodoApp, null), document.getElementById('app'));
 
 /***/ },
 /* 1 */
